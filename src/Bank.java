@@ -6,7 +6,7 @@ public class Bank implements BankInterface {
     private int password;
     private int totalMoney;
 
-    public Bank(String userName, int password, int totalMoney) {
+    public Bank(String userName, int password, int totalMoney) throws MyException{
         this.userName = userName;
         this.password = password;
         this.totalMoney = totalMoney;
@@ -40,19 +40,22 @@ public class Bank implements BankInterface {
     }
 
     @Override
-    public String payment(String name, int password, int sum,Product[]products) {
+    public String payment(String name, int password, int sum,Product[]products){
         int counter = 0;
         if (getPassword() == password) {
             for (Product c : products) {
                 counter += c.getPrice();
-                if (counter > sum) {
-                    System.out.println("У Вас не хватает средств для оплаты всей суммы. На Вашем счету " + sum);
-                    System.out.println("\nНажмите -6- если желаете получить кредит ");
-                    break;
+                try{
+                    if (counter > sum) {
+                        throw  new MyException("У Вас не хватает средств для оплаты всей суммы. На Вашем счету "+ sum+" сом.\nНажмите -6- если желаете получить кредит" );
+                    }
+                }catch(MyException e){
+                    System.err.println(e.getMessage());
                 }
+                   break;
             }
-            System.out.printf("Итоговая сумма к оплате составил %s сом", counter);
-            System.out.println("\nОстаток на карте "+(sum-counter));
+            System.out.printf("\nИтоговая сумма к оплате составил %s сом\n", counter);
+            System.err.printf("Остаток на карте %s сом.",(sum-counter));
         }
         else {
             System.out.println("Неверный пароль карты. Не можете произвести оплату ");
@@ -60,16 +63,21 @@ public class Bank implements BankInterface {
         }
     @Override
     public void credit(int password, int sum) {
-        Scanner scanner=new Scanner(System.in);
-        System.out.println("Введите пароль карты ");
-        int password1= scanner.nextInt();
-        if(password1==password) {
-            System.out.println("~~~~~~Добро пожаловать~~~~~~");
-            System.out.println("Укажите в параметрах какую сумму кредита желаете получить:");
-            System.out.printf("Вы успешно получили %s сом в кредит",sum);
-        }else {
-            System.out.println("Неверно введен пароль");
-        }
+        Scanner scanner = new Scanner(System.in);
+            System.out.println("Введите пароль карты ");
+        try {int password1 = scanner.nextInt();
+
+                if (password1 == password) {
+                    System.out.println("~~~~~~Добро пожаловать~~~~~~");
+                    System.out.println(("Укажите в параметрах какую сумму кредита желаете получить:"));
+                    System.out.printf("Вы успешно получили %s сом в кредит\n", sum);
+                    throw new MyException("-------------------------");
+                }else {
+                    System.out.println("Неверно введен пароль");
+                }
+            }catch (MyException e){
+                System.out.println(e.getMessage());
+            }
     }
     @Override
     public String toString() {

@@ -21,7 +21,7 @@ public class Main {
                 "Kyrgyzstan", 'F'),
                 products1, new Bank("Akylai", 6521, 2000));
 
-        Costumer costumer2 = new Costumer("Aziza", new Passport(LocalDate.of(2001, 12, 19),
+        Costumer costumer2 = new Costumer("Aziza", new Passport(LocalDate.of(2007, 12, 19),
                 "Kyrgyzstan", 'F'), products2, new Bank("Aziza", 4512, 3000));
 
         Costumer costumer3 = new Costumer("Azamat", new Passport(LocalDate.of(1996, 10, 28),
@@ -48,7 +48,7 @@ public class Main {
                 }
                 case 2:{
                     Product product=new Product();
-                    product.deleteProductByName("Drink", products2);
+                    product.deleteProductByName("Milk", products2);
                     break;
                 }
                 case 3:{
@@ -57,7 +57,7 @@ public class Main {
                     break;
                 }
                 case 4: {
-                    System.out.println("Update a costumer's name");
+                    System.out.println("-----Update a costumer's name-----");
                     Costumer costumer=new Costumer();
                     costumer.updateCustomerName(costumers,"Aziza","Malika");
                     break;
@@ -81,11 +81,12 @@ public class Main {
                 }
                 case 8: {
                     Product product=new Product();
-                    product.checkDateOfMadeProducts(product1.getMadeinDate(),products);
+                    product.checkDateOfMadeProducts(product3.getMadeinDate(),products2);
                     break;
                 }
             }
         }
-        }
     }
+}
+
 

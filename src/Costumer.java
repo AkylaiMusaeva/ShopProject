@@ -53,18 +53,26 @@ public class Costumer implements CostumerInterface {
     public void updateCustomerName(Costumer[]costumers,String oldName,String newName) {
         Costumer costumer = new Costumer();
         for (Costumer name : costumers) {
-            if (name.getName().equalsIgnoreCase(oldName)) {
-                name.setName(newName);
-                costumer=name;
-                System.out.println(costumer);
+            try {
+                if (name.getName().equalsIgnoreCase(oldName)) {
+                    name.setName(newName);
+                    costumer = name;
+                   throw new MyException("Costumer " + oldName + " changed user name to -> " + costumer.name);
+                }
+            }catch (MyException e){
+                System.out.println(e.getMessage());
             }
         }
     }
     @Override
     public Product[] getAllCostumerProducts(Costumer[]costumers, String name) {
         for (Costumer c :costumers) {
-            if (c.getName().equalsIgnoreCase(name)){
-                System.out.println(c.getName()+" "+Arrays.toString(c.products));
+            try {
+                if (c.getName().equalsIgnoreCase(name)) {
+                    throw new MyException(c.getName() + " " + Arrays.toString(c.products));
+                }
+            }catch (MyException e){
+                System.out.println(e.getMessage());
             }
         }
         return null;

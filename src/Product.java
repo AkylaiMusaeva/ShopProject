@@ -75,22 +75,26 @@ public class Product implements ProductInterface {
     }
 
     @Override
-    public void deleteProductByName(String productName, Product[] products) {
+    public void deleteProductByName(String description, Product[] products) {
         String[] newProducts = new String[products.length];
         for (int i=0;i<products.length;i++) {
-            if (!products[i].getProductName().equals(productName)) {
-                newProducts[i]=products[i].getProductName();
+            try{
+            if (!products[i].getDescription().equals(description)) {
+                throw new MyException(newProducts[i]=products[i].getDescription());
+            }
+        }catch (MyException e){
+                System.out.println(e.getMessage());
             }
         }
-            System.out.println("Мы успешно удалили продукт " + productName );
+            System.out.println("Мы успешно удалили продукт " + description );
             System.out.println("Новый массив после удаления: "+Arrays.toString(newProducts));
         }
     @Override
-    public void addProduct(String productName,Product[]products) {
+    public void addProduct(String description,Product[]products) {
        String[] newProducts = new String[products.length + 1];
         for(int i=0;i< products.length;i++) {
-            newProducts[i]=products[i].getProductName();
-            newProducts[products.length] = productName;
+            newProducts[i]=products[i].getDescription();
+            newProducts[products.length] = description;
         }
         System.out.println(Arrays.toString(newProducts));
     }
@@ -99,38 +103,40 @@ public class Product implements ProductInterface {
         double totalAmount=0;
         int age=Period.between(dateOfBirth,LocalDate.now()).getYears();
         System.out.println(costumersName+" "+age+" лет.");
-        for(Product p:products){
-        if(!p.isAlcoholic()) {
+        for(int i=0;i<products.length;i++){
+        if(products[i].isAlcoholic()) {
             if (age<18){
                 System.out.println("You are not allowed to drink alcohol");
-                break;
             }else {
                 System.out.println(Arrays.toString(products));
-               totalAmount+=p.getPrice();
+                totalAmount+=products[i].getPrice();
             }
-        }else{
-            System.out.println("This costumer doesn't have any alcohol ");
-            totalAmount+=p.getPrice();
-
+        }else {
+            totalAmount+=products[i].getPrice();
         }
         }
-        System.out.printf("Итого %s сом. ",totalAmount);
+        System.out.printf("Итого %s сом.\n",totalAmount);
         return null;
     }
 
     @Override
     public void checkDateOfMadeProducts(LocalDate dateOfMadeProducts,Product []products) {
         int date = Period.between(dateOfMadeProducts, LocalDate.now()).getDays();
+        double totalAmount=0;
         for(Product p:products) {
             if (date >= 10) {
                 System.out.println("Продукт просрочен на "+date+" дней" + p.toString());
-                System.out.println("Скидка 30%");
+                System.out.println("Предоставляетя скидка 30%");
+                System.out.printf("Вам предоставлена скидка в размере -> %s сом ",(p.getPrice()*0.3));
+                totalAmount+=p.getPrice();
+                System.out.printf("\nИтого к оплате со скидкой %s сом ",(totalAmount-(p.getPrice()*0.3)));
                 break;
             } else {
                 System.out.println("Нет просроченных продуктов ");
             }
         }
     }
+
     @Override
     public String toString() {
         return
@@ -143,4 +149,3 @@ public class Product implements ProductInterface {
                         '}';
     }
 }
-
